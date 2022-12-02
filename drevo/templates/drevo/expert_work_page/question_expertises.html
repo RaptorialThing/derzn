@@ -22,23 +22,33 @@
 <!--<h2 class="center question"><a href="{% url 'zdetail' question.id %}">{{question.title}}</a></h2>-->
 <div class="container overflow-hidden">
     <div class="row mt-2">
-        <div class="col">
-            Интервью на тему:
+        <div class="col proposal-bold-text">
+           Интервью на тему:
         </div>
         <div class="col">
             <a href="{% url 'interview' interview.id %}"> {{ interview.title }}</a>
         </div>
     </div>
     <div class="row mt-2">
-        <div class="col">
+        <div class="col proposal-bold-text">
             Вопрос:
         </div>
         <div class="col">
             <a href="{% url 'zdetail' question.id %}">{{question.title}}</a>
         </div>
     </div>
+    <div class="row mt-2">
+        <div class="col">
+            <p class="proposal-bold-text">Допустимое число ответов*:</p>
+        </div>
+        <div class="col">
+            <p id="max-agreed-count"> 
+            <a href="{% url 'max_agreed' interview_pk=interview.id question_pk=question.id pk=max_agreed.id %}" style="color: black;text-decoration:none;">{{ max_agreed.max_agreed }} <p class="max-agreed-text">(*максимальное число "С ответом согласен" эксперта)</p> </a>
+             </p>
+        </div>
+    </div>
             <div class="row mt-4">
-            <div class="col">
+            <div class="col proposal-bold-text">
                 Существущие ответы
             </div>
             {% for answer in answers %}
@@ -50,9 +60,10 @@
             {% endfor %}
             </div>
             <div class="row mt-4 gy-4">
-            <div class="col">
+            <div class="col proposal-bold-text">
                 Предложенные вами ответы
             </div>
+        <div class="proposed_answers row gy-4" id="proposed_answers">
             {% for proposal in proposed_answers %}
             <div class="row gy-4" id="answers">
                 <div class="col">
@@ -60,9 +71,8 @@
                 </div>
             </div>
             {% endfor %}
-        <div class="proposed_answers row gy-4" id="proposed_answers">
         </div>
-        <div class="add-new-answer row mt-4 mb-5">
+        <div class="add-new-answer row mt-2">
             <div class="row">
                 <div class="col">
                 <form method="POST" action="{% url 'propose_answer' interview.id question.id %}"
@@ -73,12 +83,15 @@
                       hx-swap="beforeend"
                       onsubmit="new_proposal_button();">
                     {% csrf_token %}
-                        <input id="new_answer_text"
+                        <!--<input id="new_answer_text"
+>>>>>>> 83d31bbc7c475ba2247ff32d9421ab82ac9db59b
                                type="text"
                                class="form-control"
                                placeholder="Текст нового ответа"
                                name="text"
-                               >
+                               >-->
+                        <textarea class="form-control" id="new_answer_text" name="text" placeholder="Текст нового ответа"></textarea>
+
                     </div>
             </div>
             </div>
@@ -110,7 +123,6 @@
                     <div class="col text-center">
                     <button type="submit"  class="btn btn-outline-primary">Добавить ответ</button>
                     </div>
-
             </form>
             <div class="response" id="new-answer-result"></div>
         </div>
@@ -126,7 +138,13 @@
         color: gray;
     }
 
+    .proposal-bold-text {
+        font-weight: bold;
+    }
 
+    .max-agreed-text {
+        color: gray
+    }
 
 </style>
 {% endblock %}
@@ -141,6 +159,14 @@ function new_proposal_button() {
     location.reload()
     return true
 }
+
+function max_agreed_color() {
+    max_agreed = parseInt(document.getElementById("max-agreed-count").textContent)
+    if (max_agreed >= 0) {   
+        document.getElementsByClassName("max-agreed-text")[0].style.color = "red"
+    }
+}
+
 
 </script>
 {% endblock %}

@@ -1,4 +1,5 @@
 import typing as t
+from django.db.models import Q
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
@@ -8,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 # from django.http import HttpRequest
 
 from drevo.models.knowledge import Znanie
+from drevo.models.max_agreed_question import MaxAgreedQuestion
 
 User = get_user_model()
 
@@ -214,6 +216,31 @@ class InterviewAnswerExpertProposal(models.Model):
             )
         else:
             return InterviewAnswerExpertProposal.objects.get(pk=proposal_pk)
+  
+    def check_max_agreed(prop):
+        """
+        Контроль максимально разрешенных чекбоксов (с ответом согласен) эксперта
+        с ответами и предложениями.
+        Возвращает true, если разрешено менять поле is_agree ответов и предложений
+        с false на true. Если число ответов и предложений с is_agree=true 
+        больше max_agreed  - возвращает false.
+        """  
+        
+        max_agreed = MaxAgreedQuestion.objects.filter(Q(interview_id=prop.interview_id) 
+        & Q(question_id=prop.question_id) 
+        & Q(author_id=prop.expert_id)).first()
+        if not max_agreed:
+            return True
+        max_agreed = max_agreed.max_agreed
+        current_agreed = InterviewAnswerExpertProposal.objects.filter(Q(expert_id=prop.expert_id) 
+        & Q(question=prop.question_id) 
+        & Q(interview=prop.interview_id) 
+        & Q(is_agreed=True)).count()          
+
+        if max_agreed <= current_agreed:    
+            return False
+   
+        return True
 
     def get_arguments(self) -> t.List[str]:
         return self.comment.get("arguments", [])

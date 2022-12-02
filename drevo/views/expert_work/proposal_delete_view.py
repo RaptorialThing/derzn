@@ -9,4 +9,6 @@ class ProposalDeleteView(DeleteView):
     """
 
     model = InterviewAnswerExpertProposal
-    success_url = reverse_lazy("drevo")
+    success_url = reverse_lazy("/drevo/")
+#    def get_success_url(self):
+#        return self.request.META.get('HTTP_REFERER')

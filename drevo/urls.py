@@ -29,8 +29,13 @@ from .views import (
     friends_invite_view,
     KnowledgeFormView,
     QuizListView,
+    MaxAgreedQuestionView,
+    MaxAgreedQuestionCreateView,
+    MaxAgreedQuestionDeleteView,
+    MaxAgreedQuestionListView,
+    KnowledgeStatisticFormView,
 )
-from .views import send_znanie, knowledge_feed_view, send_to_feed_view
+from .views import send_znanie, knowledge_feed_view
 from .views.expert_work.views import (
     propose_answer,
     update_answer_proposal,
@@ -68,6 +73,7 @@ urlpatterns = [
     ),
     path("znanie/<int:pk>/message/send/", send_znanie, name="zsend_mes"),
     path("znanie/<int:pk>/grade/", KnowledgeFormView.as_view(), name="grade"),
+    path('znanie/<int:pk>/grade/statistic', KnowledgeStatisticFormView.as_view(), name='grade_statistic'),
     path("all_quizzes/", QuizListView.as_view(), name="all_quizzes"),
     path("label/<int:pk>", ZnanieByLabelView.as_view(), name="zlabel"),
     path("author/<int:pk>", AuthorDetailView.as_view(), name="author"),
@@ -101,68 +107,46 @@ urlpatterns = [
     ),
     path("interview/<int:pk>", ProposalDeleteView.as_view(), name="delete"),
     path(
+        "interview/<int:interview_pk>/questions/<int:question_pk>/<int:pk>",
+        ProposalDeleteView.as_view(),
+        name="delete",
+    ),
+    path(
         "interview/new_answers/<int:proposal_pk>",
         update_proposed_answer,
         name="update_proposed_answer",
     ),
-    path("admin/interview/", AllInterviewView.as_view(), name="all_interview"),
     path(
-        "admin/interview/<int:pk>/questions/",
-        InterviewQuestionsView.as_view(),
-        name="interview_quests",
+        "interview/<int:interview_pk>/questions/<int:question_pk>/max_agreed/<int:pk>",
+        MaxAgreedQuestionView.as_view(),
+        name="max_agreed",
     ),
+    path("max_agreed_create/", MaxAgreedQuestionCreateView.as_view(), name="max_agreed_create"),
+    path("max_agreed_list/", MaxAgreedQuestionListView.as_view(), name="max_agreed_list"),
     path(
-        "admin/interview/<int:inter_pk>/questions/<int:quest_pk>/",
-        question_admin_work_view,
-        name="question_admin_work",
+        "interview/<int:interview_pk>/questions/<int:question_pk>/max_agreed/<int:pk>/",
+        MaxAgreedQuestionDeleteView.as_view(),
+        name="delete_max_agreed",
     ),
+    path("admin/interview/", AllInterviewView.as_view(), name='all_interview'),
+    path("admin/interview/<int:pk>/questions/", InterviewQuestionsView.as_view(), name='interview_quests'),
+    path("admin/interview/<int:inter_pk>/questions/<int:quest_pk>/", question_admin_work_view,
+         name='question_admin_work'),
     path("friends/", friends_view, name="friends"),
     path("friends/friends_added/", friends_added_view, name="friends_added"),
     path("friends/friends_invite/", friends_invite_view, name="friends_invite"),
-    path(
-        "knowledge-feed/",
-        knowledge_feed_view.knowledge_feed_view,
-        name="knowledge_feed",
-    ),
-    path(
-        "knowledge-feed/delete/<int:message_id>/",
-        knowledge_feed_view.delete_message,
-        name="delete_message",
-    ),
-    path(
-        "knowledge-feed/send/<int:znanie_id>/",
-        send_to_feed_view.send_to_feed_view,
-        name="send_to_feed",
-    ),
-    path("developer/", developer_view, name="developer_page"),
-    path("znanie_create/", KnowledgeCreateView.as_view(), name="znanie_create"),
-    path(
-        "znanie_user_tp/",
-        UserKnowledgeProcessView.as_view(),
-        name="znanie_user_process",
-    ),
-    path("znanie_update/<pk>/", KnowledgeUpdateView.as_view(), name="znanie_update"),
-    path(
-        "znanie_status/<pk>/<status>",
-        KnowledgeChangeStatus.as_view(),
-        name="znanie_change_status",
-    ),
-    path(
-        "znanie_expert_tp/",
-        ExpertKnowledgeProcess.as_view(),
-        name="znanie_expert_process",
-    ),
-    path(
-        "znanie_redactor_tp/",
-        RedactorKnowledgeProcess.as_view(),
-        name="znanie_redactor_process",
-    ),
-    path(
-        "znanie_director_tp/",
-        DirectorKnowledgeProcess.as_view(),
-        name="znanie_director_process",
-    ),
-    path("klz/", KlzKnowledgeProcess.as_view(), name="klz"),
+     path('knowledge-feed/', knowledge_feed_view.knowledge_feed_view, name='knowledge_feed'),
+    path('knowledge-feed/delete/<int:message_id>/', knowledge_feed_view.delete_message, name='delete_message'),
+    
+    path('developer/', developer_view, name='developer_page'),
+    path('znanie_create/', KnowledgeCreateView.as_view(), name='znanie_create'),
+    path('znanie_user_tp/', UserKnowledgeProcessView.as_view(), name='znanie_user_process'),
+    path('znanie_update/<pk>/', KnowledgeUpdateView.as_view(), name='znanie_update'),
+    path('znanie_status/<pk>/<status>', KnowledgeChangeStatus.as_view(), name='znanie_change_status'),
+    path('znanie_expert_tp/', ExpertKnowledgeProcess.as_view(), name='znanie_expert_process'),
+    path('znanie_redactor_tp/', RedactorKnowledgeProcess.as_view(), name='znanie_redactor_process'),
+    path('znanie_director_tp/', DirectorKnowledgeProcess.as_view(), name='znanie_director_process'),
+    path('klz/', KlzKnowledgeProcess.as_view(), name='klz')
 ]
 
 if settings.DEBUG:
