@@ -8,7 +8,6 @@ from django.utils.safestring import mark_safe
 from mptt.admin import DraggableMPTTAdmin
 
 from drevo.models import InterviewAnswerExpertProposal
-from drevo.models import MaxAgreedQuestion
 from drevo.models.expert_category import CategoryExpert
 from drevo.models.knowledge_grade import KnowledgeGrade
 from .forms.relation_form import RelationAdminForm
@@ -484,7 +483,6 @@ admin.site.register(Developer, DeveloperAdmin)
 admin.site.register(FriendsInviteTerm)
 admin.site.register(LabelFeedMessage)
 admin.site.register(FeedMessage)
-admin.site.register(MaxAgreedQuestion)
 
 admin.site.register(AgeUsersScale)
 @admin.register(KnowledgeStatuses)
