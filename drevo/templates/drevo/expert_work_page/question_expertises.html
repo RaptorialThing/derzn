@@ -39,11 +39,11 @@
     </div>
     <div class="row mt-2">
         <div class="col">
-            <p class="proposal-bold-text">Допустимое число ответов*:</p>
+            <p class="proposal-bold-text">Допустимое число ответов:</p>
         </div>
         <div class="col">
             <p id="max-agreed-count"> 
-            <a href="{% url 'max_agreed' interview_pk=interview.id question_pk=question.id pk=max_agreed.id %}" style="color: black;text-decoration:none;">{{ max_agreed.max_agreed }} <p class="max-agreed-text">(*максимальное число "С ответом согласен" эксперта)</p> </a>
+            {{ max_agreed }}
              </p>
         </div>
     </div>
@@ -84,7 +84,6 @@
                       onsubmit="new_proposal_button();">
                     {% csrf_token %}
                         <!--<input id="new_answer_text"
->>>>>>> 83d31bbc7c475ba2247ff32d9421ab82ac9db59b
                                type="text"
                                class="form-control"
                                placeholder="Текст нового ответа"
@@ -159,14 +158,5 @@ function new_proposal_button() {
     location.reload()
     return true
 }
-
-function max_agreed_color() {
-    max_agreed = parseInt(document.getElementById("max-agreed-count").textContent)
-    if (max_agreed >= 0) {   
-        document.getElementsByClassName("max-agreed-text")[0].style.color = "red"
-    }
-}
-
-
 </script>
 {% endblock %}

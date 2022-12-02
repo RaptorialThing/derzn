@@ -10,6 +10,8 @@ from django.utils.translation import gettext_lazy as _
 
 from drevo.models.knowledge import Znanie
 from drevo.models.max_agreed_question import MaxAgreedQuestion
+from drevo.models.relation import Relation
+from drevo.models.relation_type import Tr
 
 User = get_user_model()
 
@@ -225,14 +227,13 @@ class InterviewAnswerExpertProposal(models.Model):
         с false на true. Если число ответов и предложений с is_agree=true 
         больше max_agreed  - возвращает false.
         """  
-        
-        max_agreed = MaxAgreedQuestion.objects.filter(Q(interview_id=prop.interview_id) 
-        & Q(question_id=prop.question_id) 
-        & Q(author_id=prop.expert_id)).first()
+        usr_id = Znanie.objects.get(id=prop.question_id).user_id
+        max_agreed = Relation.objects.filter(Q(bz_id=prop.question_id) & Q(tr_id=Tr.objects.get(name="Число ответов").id) & Q(user_id=usr_id)).order_by().last()
+        max_agreed = Znanie.objects.get(id=max_agreed.rz_id)
         if not max_agreed:
             return True
-        max_agreed = max_agreed.max_agreed
-        current_agreed = InterviewAnswerExpertProposal.objects.filter(Q(expert_id=prop.expert_id) 
+        max_agreed = int(max_agreed.name)
+        current_agreed = InterviewAnswerExpertProposal.objects.filter(Q(expert_id=usr_id) 
         & Q(question=prop.question_id) 
         & Q(interview=prop.interview_id) 
         & Q(is_agreed=True)).count()          
