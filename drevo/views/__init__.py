@@ -35,10 +35,6 @@ from .znanie_by_label_view import ZnanieByLabelView
 from .znanie_detail_view import ZnanieDetailView
 from .znanie_rating_view import ZnanieRatingView
 from .znanie_send_view import send_znanie
-from .max_agreed_question_view import MaxAgreedQuestionView
-from .max_agreed_question_create_view import MaxAgreedQuestionCreateView
-from .max_agreed_question_delete_view import MaxAgreedQuestionDeleteView
-from .max_agreed_question_list_view import MaxAgreedQuestionListView
 from .knowledge_grade_statistic_view import KnowledgeStatisticFormView
 
 __all__ = [
@@ -71,10 +67,6 @@ __all__ = [
     "send_znanie",
     "QuizListView",
     "ProposalDeleteView",
-    "MaxAgreedQuestionView",
-    "MaxAgreedQuestionCreateView"
-    "MaxAgreedQuestionDeleteView",
-    "MaxAgreedQuestionListView",
     'QuizListView',
     'KnowledgeStatisticFormView'
 ]

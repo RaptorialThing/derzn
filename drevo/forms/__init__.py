@@ -12,7 +12,6 @@ from .author_subribtion_forms import AuthorSubscriptionDeleteForm
 from .category_expert_form import CtegoryExpertForm
 from .znanie_send_message_form import ZnanieSendMessage
 from .admin_interview_work_form import InterviewAnswerExpertProposalForms
-from .max_agreed_create_form import MaxAgreedQuestionCreateForm
 
 __all__ = [
     'AuthorSubscriptionDeleteForm',
@@ -29,5 +28,4 @@ __all__ = [
     'CtegoryExpertForm',
     'ZnanieSendMessage',
     'InterviewAnswerExpertProposalForms',
-    'MaxAgreedQuestionCreateForm',
 ]

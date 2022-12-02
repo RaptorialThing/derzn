@@ -18,5 +18,4 @@ from .friends_invite import FriendsInviteTerm  # noqa
 from .interview_answer_expert_proposal import InterviewAnswerExpertProposal  # noqa
 from .knowledge_statuses import KnowledgeStatuses
 from .developer import Developer
-from .max_agreed_question import MaxAgreedQuestion
 from .age_users_scale import AgeUsersScale

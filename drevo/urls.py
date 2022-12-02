@@ -29,10 +29,6 @@ from .views import (
     friends_invite_view,
     KnowledgeFormView,
     QuizListView,
-    MaxAgreedQuestionView,
-    MaxAgreedQuestionCreateView,
-    MaxAgreedQuestionDeleteView,
-    MaxAgreedQuestionListView,
     KnowledgeStatisticFormView,
 )
 from .views import send_znanie, knowledge_feed_view
@@ -115,18 +111,6 @@ urlpatterns = [
         "interview/new_answers/<int:proposal_pk>",
         update_proposed_answer,
         name="update_proposed_answer",
-    ),
-    path(
-        "interview/<int:interview_pk>/questions/<int:question_pk>/max_agreed/<int:pk>",
-        MaxAgreedQuestionView.as_view(),
-        name="max_agreed",
-    ),
-    path("max_agreed_create/", MaxAgreedQuestionCreateView.as_view(), name="max_agreed_create"),
-    path("max_agreed_list/", MaxAgreedQuestionListView.as_view(), name="max_agreed_list"),
-    path(
-        "interview/<int:interview_pk>/questions/<int:question_pk>/max_agreed/<int:pk>/",
-        MaxAgreedQuestionDeleteView.as_view(),
-        name="delete_max_agreed",
     ),
     path("admin/interview/", AllInterviewView.as_view(), name='all_interview'),
     path("admin/interview/<int:pk>/questions/", InterviewQuestionsView.as_view(), name='interview_quests'),
